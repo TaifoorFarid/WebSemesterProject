@@ -1,534 +1,164 @@
-import React, { useState, useEffect } from "react";
-import { Button, Form, Modal, Table, Alert } from "react-bootstrap";
-import axios from "axios";
+const express = require("express");
+const Book = require("../models/Book");
+const router = express.Router();
 
-const BookManager = () => {
-  const [books, setBooks] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [showReviewsModal, setShowReviewsModal] = useState(false);
-  const [currentBook, setCurrentBook] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    imageUrl: "",
-    rating: "",
-    authorname: "",
-    description: "",
-    link: "",
+// GET all books
+router.get("/", async (req, res) => {
+  try {
+    const books = await Book.find();
+    res.json(books);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// POST a new book
+router.post("/", async (req, res) => {
+  const { name, imageUrl, rating, authorname, description, link } = req.body;
+
+  const book = new Book({
+    name,
+    imageUrl,
+    rating,
+    authorname,
+    description,
+    link,
   });
-  const [reviewData, setReviewData] = useState({
-    reviewer: "",
-    rating: "",
-    comment: "",
-  });
-  const [bookReviews, setBookReviews] = useState([]);
-  const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
 
-  useEffect(() => {
-    fetchBooks();
-  }, []);
+  try {
+    const newBook = await book.save();
+    res.status(201).json(newBook);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
-  const fetchBooks = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/api/books");
-      setBooks(response.data);
-    } catch (error) {
-      setAlert({
-        show: true,
-        message: "Failed to fetch books.",
-        variant: "danger",
-      });
+// PUT (update) a book by ID
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, imageUrl, rating, authorname, description, link } = req.body;
+
+  try {
+    const updatedBook = await Book.findByIdAndUpdate(
+      id,
+      { name, imageUrl, rating, authorname, description, link },
+      { new: true }
+    );
+
+    if (!updatedBook) {
+      return res.status(404).json({ message: "Book not found" });
     }
-  };
 
-  const fetchReviews = async (bookId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/api/books/${bookId}/reviews`
-      );
-      setBookReviews(response.data);
-    } catch (error) {
-      setAlert({
-        show: true,
-        message: "Failed to fetch reviews.",
-        variant: "danger",
-      });
+    res.json(updatedBook);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// DELETE a book by ID
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedBook = await Book.findByIdAndDelete(id);
+
+    if (!deletedBook) {
+      return res.status(404).json({ message: "Book not found" });
     }
-  };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    res.json({ message: "Book deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-  const handleReviewChange = (e) => {
-    const { name, value } = e.target;
-    setReviewData({ ...reviewData, [name]: value });
-  };
+// POST a review to a specific book
+router.post("/:id/reviews", async (req, res) => {
+  const { id } = req.params;
+  const { reviewer, rating, comment } = req.body;
 
-  const handleAddBook = async () => {
-    try {
-      await axios.post("http://localhost:8000/api/books", formData);
-      fetchBooks();
-      setShowAddModal(false);
-      setAlert({
-        show: true,
-        message: "Book added successfully.",
-        variant: "success",
-      });
-    } catch (error) {
-      setAlert({
-        show: true,
-        message: "Failed to add book.",
-        variant: "danger",
-      });
+  try {
+    const book = await Book.findById(id);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
     }
-  };
 
-  const handleEditBook = async () => {
-    try {
-      await axios.put(
-        `http://localhost:8000/api/books/${currentBook._id}`,
-        formData
-      );
-      fetchBooks();
-      setShowEditModal(false);
-      setAlert({
-        show: true,
-        message: "Book updated successfully.",
-        variant: "success",
-      });
-    } catch (error) {
-      setAlert({
-        show: true,
-        message: "Failed to update book.",
-        variant: "danger",
-      });
+    const review = { reviewer, rating, comment };
+    book.reviews.push(review);
+    await book.save();
+
+    res.status(201).json(book);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// GET reviews of a specific book
+router.get("/:id/reviews", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const book = await Book.findById(id);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
     }
-  };
 
-  const handleDeleteBook = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8000/api/books/${id}`);
-      fetchBooks();
-      setAlert({
-        show: true,
-        message: "Book deleted successfully.",
-        variant: "success",
-      });
-    } catch (error) {
-      setAlert({
-        show: true,
-        message: "Failed to delete book.",
-        variant: "danger",
-      });
+    res.json(book.reviews);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// PUT (update) a review of a specific book
+router.put("/:bookId/reviews/:reviewId", async (req, res) => {
+  const { bookId, reviewId } = req.params;
+  const { reviewer, rating, comment } = req.body;
+
+  try {
+    const book = await Book.findById(bookId);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
     }
-  };
 
-  const handleAddReview = async () => {
-    try {
-      await axios.post(
-        `http://localhost:8000/api/books/${currentBook._id}/reviews`,
-        reviewData
-      );
-      fetchReviews(currentBook._id);
-      setShowReviewModal(false);
-      setAlert({
-        show: true,
-        message: "Review added successfully.",
-        variant: "success",
-      });
-    } catch (error) {
-      setAlert({
-        show: true,
-        message: "Failed to add review.",
-        variant: "danger",
-      });
+    const review = book.reviews.id(reviewId);
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
     }
-  };
 
-  const handleEditReview = async (reviewId) => {
-    try {
-      await axios.put(
-        `http://localhost:8000/api/books/${currentBook._id}/reviews/${reviewId}`,
-        reviewData
-      );
-      fetchReviews(currentBook._id);
-      setShowReviewModal(false);
-      setAlert({
-        show: true,
-        message: "Review updated successfully.",
-        variant: "success",
-      });
-    } catch (error) {
-      setAlert({
-        show: true,
-        message: "Failed to update review.",
-        variant: "danger",
-      });
+    review.reviewer = reviewer;
+    review.rating = rating;
+    review.comment = comment;
+    await book.save();
+
+    res.json(book);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// DELETE a review of a specific book
+router.delete("/:bookId/reviews/:reviewId", async (req, res) => {
+  const { bookId, reviewId } = req.params;
+
+  try {
+    const book = await Book.findById(bookId);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
     }
-  };
 
-  const handleDeleteReview = async (reviewId) => {
-    try {
-      await axios.delete(
-        `http://localhost:8000/api/books/${currentBook._id}/reviews/${reviewId}`
-      );
-      fetchReviews(currentBook._id);
-      setAlert({
-        show: true,
-        message: "Review deleted successfully.",
-        variant: "success",
-      });
-    } catch (error) {
-      setAlert({
-        show: true,
-        message: "Failed to delete review.",
-        variant: "danger",
-      });
+    const review = book.reviews;
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
     }
-  };
 
-  return (
-    <div>
-      <Button variant="primary" onClick={() => setShowAddModal(true)}>
-        Add New Book
-      </Button>
+    book.reviews = book.reviews.filter((review) => review._id != reviewId);
 
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Image URL</th>
-            <th>Rating</th>
-            <th>Author</th>
-            <th>Description</th>
-            <th>Link</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {books.map((book) => (
-            <tr key={book._id}>
-              <td>{book.name}</td>
-              <td>
-                <a
-                  href={book.imageUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Image
-                </a>
-              </td>
-              <td>{book.rating}</td>
-              <td>{book.authorname}</td>
-              <td>{book.description}</td>
-              <td>
-                <a href={book.link} target="_blank" rel="noopener noreferrer">
-                  Link
-                </a>
-              </td>
-              <td>
-                <Button
-                  variant="warning"
-                  onClick={() => {
-                    setCurrentBook(book);
-                    setFormData(book);
-                    setShowEditModal(true);
-                  }}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => handleDeleteBook(book._id)}
-                >
-                  Delete
-                </Button>
-                <Button
-                  variant="info"
-                  onClick={() => {
-                    setCurrentBook(book);
-                    fetchReviews(book._id);
-                    setShowReviewsModal(true);
-                  }}
-                >
-                  Show Reviews
-                </Button>
-                <Button
-                  variant="info"
-                  onClick={() => {
-                    setCurrentBook(book);
-                    setReviewData({ reviewer: "", rating: "", comment: "" });
-                    setShowReviewModal(true);
-                  }}
-                >
-                  Add Review
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+    await book.save();
 
-      {/* Add Book Modal */}
-      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Book</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={formData.name}
-                placeholder="Enter book name"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formImageUrl">
-              <Form.Label>Image URL</Form.Label>
-              <Form.Control
-                type="text"
-                name="imageUrl"
-                value={formData.imageUrl}
-                placeholder="Enter image URL"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formRating">
-              <Form.Label>Rating</Form.Label>
-              <Form.Control
-                type="number"
-                name="rating"
-                value={formData.rating}
-                placeholder="Enter rating"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formAuthorname">
-              <Form.Label>Author Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="authorname"
-                value={formData.authorname}
-                placeholder="Enter author name"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                name="description"
-                value={formData.description}
-                placeholder="Enter description"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formLink">
-              <Form.Label>Link</Form.Label>
-              <Form.Control
-                type="text"
-                name="link"
-                value={formData.link}
-                placeholder="Enter link"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Button variant="primary" onClick={handleAddBook}>
-              Add Book
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
+    res.json(book);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
-      {/* Edit Book Modal */}
-      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Book</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={formData.name}
-                placeholder="Enter book name"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formImageUrl">
-              <Form.Label>Image URL</Form.Label>
-              <Form.Control
-                type="text"
-                name="imageUrl"
-                value={formData.imageUrl}
-                placeholder="Enter image URL"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formRating">
-              <Form.Label>Rating</Form.Label>
-              <Form.Control
-                type="number"
-                name="rating"
-                value={formData.rating}
-                placeholder="Enter rating"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formAuthorname">
-              <Form.Label>Author Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="authorname"
-                value={formData.authorname}
-                placeholder="Enter author name"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                name="description"
-                value={formData.description}
-                placeholder="Enter description"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formLink">
-              <Form.Label>Link</Form.Label>
-              <Form.Control
-                type="text"
-                name="link"
-                value={formData.link}
-                placeholder="Enter link"
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Button variant="primary" onClick={handleEditBook}>
-              Update Book
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
-
-      {/* Add Review Modal */}
-      <Modal show={showReviewModal} onHide={() => setShowReviewModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Review</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formReviewer">
-              <Form.Label>Reviewer</Form.Label>
-              <Form.Control
-                type="text"
-                name="reviewer"
-                value={reviewData.reviewer}
-                placeholder="Enter reviewer name"
-                onChange={handleReviewChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formRating">
-              <Form.Label>Rating</Form.Label>
-              <Form.Control
-                type="number"
-                name="rating"
-                value={reviewData.rating}
-                placeholder="Enter rating"
-                onChange={handleReviewChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formComment">
-              <Form.Label>Comment</Form.Label>
-              <Form.Control
-                type="text"
-                name="comment"
-                value={reviewData.comment}
-                placeholder="Enter comment"
-                onChange={handleReviewChange}
-              />
-            </Form.Group>
-            <Button variant="primary" onClick={handleAddReview}>
-              Add Review
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
-
-      {/* Reviews Modal */}
-      <Modal show={showReviewsModal} onHide={() => setShowReviewsModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Reviews for {currentBook?.name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Reviewer</th>
-                <th>Rating</th>
-                <th>Comment</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookReviews.map((review) => (
-                <tr key={review._id}>
-                  <td>{review.reviewer}</td>
-                  <td>{review.rating}</td>
-                  <td>{review.comment}</td>
-                  <td>
-                    <Button
-                      variant="warning"
-                      onClick={() => {
-                        setReviewData(review);
-                        setShowReviewModal(true);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => handleDeleteReview(review._id)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <Button
-            variant="primary"
-            onClick={() => {
-              setReviewData({ reviewer: "", rating: "", comment: "" });
-              setShowReviewModal(true);
-            }}
-          >
-            Add Review
-          </Button>
-        </Modal.Body>
-      </Modal>
-
-      {alert.show && (
-        <Alert
-          variant={alert.variant}
-          onClose={() => setAlert({ ...alert, show: false })}
-          dismissible
-        >
-          {alert.message}
-        </Alert>
-      )}
-    </div>
-  );
-};
-
-export default BookManager;
+module.exports = router;

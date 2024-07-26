@@ -1,0 +1,81 @@
+.all-books-page {
+    position: relative;
+    text-align: center;
+    color: white;
+
+}
+.header-image {
+    background-size: cover;
+    background-position: center;
+    height: 50vh; /* Make the header full height */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    
+}
+.header-image h1{
+    margin-top: 40px;
+}
+
+
+.header-title {
+    font-size: 2.5rem; /* Slightly smaller title */
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.header-subtitle {
+    font-size: 1rem; /* Slightly smaller subtitle */
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.search-bar {
+    width: 50%;
+    max-width: 400px;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.all-books-container {
+    margin-top: 50px;
+    padding: 20px;
+    color: whitesmokel;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Adjust spacing between cards */
+    gap: 20px; /* Additional spacing between cards */
+
+}
+
+.book-card {
+    width: calc(33.33% - 10px); /* Slightly narrower cards to fit three in a row */
+    padding: 20px; /* Smaller padding */
+    border-radius: 8px;
+    text-align: center;
+    /* box-shadow: 0 2px 4px rgba(124, 0, 0, 0.836); */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.book-card:hover {
+    transform: scale(1.05);
+    /* box-shadow: 0 4px 8px rgba(1, 13, 65, 0.836); */
+}
+
+.book-image {
+    width: 100%;
+    height: auto;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 10px; /* Slightly smaller margin */
+    border-radius: 8px;
+}
+
+.book-details {
+    padding: 24px;
+}

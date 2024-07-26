@@ -1,0 +1,62 @@
+.background-imag {
+    flex: 1;
+    background-color: #272729;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.profile-container {
+    max-width: 100%;
+    padding: 30px;
+    padding-top: 60px;
+    color: white;
+}
+
+h1 {
+    /* text-align: center; */
+    margin-bottom: 40px;
+    color: white;
+}
+
+.account-settings {
+    margin-bottom: 40px;
+}
+
+.account-settings h2 {
+    text-align: left;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.form-label {
+    color: white;
+   
+}
+
+
+.form-group-spacing{
+    padding-top: 30px;
+}
+
+.form-control {
+    color: black;
+    border: 1px solid #ccc;
+    
+}
+
+.save-button {
+    display: flex;
+    justify-content: flex-end;
+  
+}
+
+.save-button button {
+    min-width: 100px;
+    /* padding: 10px; */
+}
+
+

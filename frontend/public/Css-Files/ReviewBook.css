@@ -1,0 +1,215 @@
+/* Updated CSS for ReviewBook.css */
+
+.page-container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.background-imagess {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #272729;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+.book-details-containerss {
+    padding: 50px;
+    border-radius: 8px;
+    color: azure;
+}
+
+.book-imagess-col {
+    text-align: center;
+}
+
+.book-imagess {
+    width: 100%;
+    max-width: 200px; /* Adjust the size as needed */
+    height: auto;
+    border-radius: 8px;
+}
+
+.book-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: azure;
+}
+
+.book-author {
+    font-size: 1.25rem;
+}
+
+.book-rating {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.star-rating {
+    color: #f39c12; /* Adjust the star color */
+    margin-right: 10px;
+}
+
+.book-description {
+    margin: 10px 0;
+}
+
+.buttonnn-gap {
+    margin-left: 1rem; /* Adjust the value as needed */
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}
+
+.filled-star {
+    color: gold;
+}
+
+.half-star {
+    color: gold;
+    position: relative;
+}
+
+.half-star::after {
+    content: '★';
+    color: lightgray;
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+}
+
+.empty-star {
+    color: rgb(250, 250, 250);
+}
+
+/* New styles for the Reviews section */
+.reviews-section {
+    position: relative;
+}
+
+.review {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 1rem;
+    background-color: #313131;
+    position: relative; /* For dropdown positioning */
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* To position the menu */
+}
+
+.review-username {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.review-menu {
+    position: absolute;
+    top: 0; /* Adjust top positioning */
+    right: 10px; /* Align to the right end of the review box */
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-dots {
+    font-size: 1.5rem;
+    color: #fafafa;
+}
+
+.menu-dropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.menu-dropdown button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.menu-dropdown button:hover {
+    background-color: #f0f0f0;
+}
+
+.review-content {
+    margin-top: 10px;
+}
+
+.review-text {
+    overflow-wrap: break-word; /* Ensures text wraps inside the container */
+    word-wrap: break-word;
+    hyphens: auto;
+    max-height: none; /* Allow text to expand */
+    overflow: visible; /* Allow overflow text to be visible */
+}
+
+.review-heading {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.no-reviews {
+    text-align: center;
+    color: #e0e0e0;
+    font-size: 1.25rem;
+    font-style: italic;
+}
+
+.edit-review-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.edit-review-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    resize: vertical;
+    max-height: none; /* Allow textarea to expand fully */
+}
+
+.save-edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: flex-end; /* Align the button to the right */
+}
+
+.save-edit-button:hover {
+    background-color: #0056b3;
+}

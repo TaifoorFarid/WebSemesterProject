@@ -1,0 +1,62 @@
+.header-container {
+  /* Ensure it starts from the left edge */
+  width: 100%;
+  background-color: rgba(
+    22,
+    22,
+    22,
+    0.8
+  ); /* Adjust the transparency by changing the alpha value (0.8) */
+  padding: 20px;
+  z-index: 100;
+  margin-bottom: 2rem;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin-right: 20px;
+  color: aliceblue;
+}
+
+.header-container nav ul li:last-child {
+  margin-right: 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: black;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #0d6efd;
+  padding-left: 10px; /* Adjust padding as needed */
+  padding-right: 10px; /* Adjust padding as needed */
+  border-radius: 5px;
+  border-collapse: separate;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adds a slight shadow to give a "pop out" effect */
+}
+
+.nav-link.active {
+  border-bottom: 2px solid white;
+}
+
+.footer {
+  padding: 12px 0px;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 60px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  border-top: 2px solid black;
+}

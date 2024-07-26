@@ -1,0 +1,59 @@
+.top{
+  background-image: url('C:/Users/LAPTOP/Desktop/Book_Review_Website/frontend/src/bg.jpg');;
+  background-size: cover;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+}
+
+
+.login-container {
+  background-color: transparent;
+  /* Adjust the opacity value as needed */
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 90px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.89);  
+  border-radius: 5%;
+ 
+}
+
+.login-card {
+  padding: 20px;
+  background-color: transparent; /* Adjust the background color as needed */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.89);  
+  border-radius: 8px; /* Adjust the border radius as needed */
+ 
+}
+
+.login-section {
+  background-color: transparent;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.89);  
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  margin-top: 40px; 
+}
+
+.login-text{
+  color: rgb(235, 235, 235);
+}
+
+.form-control-black {
+  color: black !important; /* Forces the text color to black */
+  border-color: #ccc; /* Adjust the border color if necessary */
+}
+
+.form-control-black::placeholder {
+  color: rgba(0, 0, 0, 0.5); /* Adjust the placeholder text color if necessary */
+}

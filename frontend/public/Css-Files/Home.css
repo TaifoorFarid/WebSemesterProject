@@ -1,0 +1,298 @@
+.home-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh; /* Ensures the background covers the full height */
+    width: 100%; /* Ensures the background covers the full width */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    overflow-y: auto; /* Allow vertical scrolling */
+}
+
+.home-container {
+    width: 100%; /* Make the container span the full width */
+    padding: 0; /* Remove any default padding */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.text-start {
+    color: white; /* Optional: Make the text color white for better visibility */
+    text-align: left; /* Align text to the start (left) */
+    margin-bottom: 20px; /* Add margin to separate from the following text */
+}
+
+.button-wrapper {
+    display: inline-block;
+  }
+  
+  .button-wrapper a {
+    display: inline-block;
+  }
+  
+
+.additional-image {
+    max-width: 100%;
+    height: auto; /* Maintain aspect ratio */
+}
+
+.color-box-container {
+    width: 100%; /* Make the container span the full width */
+    padding: 20px 0; /* Add some padding for spacing */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.color-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px; /* Increase the height */
+    flex: 1; /* Ensure boxes take up equal space */
+    margin: 10px; /* Add margin for spacing between boxes */
+    color: white; /* Ensure the text is visible */
+    font-size: 1.2rem; /* Adjust the font size as needed */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    flex-direction: column; /* Ensure content is stacked vertically */
+    
+    
+}
+
+.box1 {
+    background-color: #ff6f61; /* Adjust the color as needed */
+    
+}
+
+.box2 {
+    background-color: #6b5b95; /* Adjust the color as needed */
+}
+
+.box3 {
+    background-color: #88b04b; /* Adjust the color as needed */
+}
+
+.box4 {
+    background-color: #f7cac9; /* Adjust the color as needed */
+}
+
+.box-content {
+    text-align: center;
+    width: 100%;
+}
+
+.count {
+    font-size: 2rem; /* Adjust the font size as needed */
+}
+
+.underline {
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    margin: 10px 0;
+}
+
+.box-text {
+    font-size: 1rem; /* Adjust the font size as needed */
+}
+
+.about-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Ensure the section fits the full height of the viewport */
+}
+
+.about-container {
+    /* color: #333; */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.about-heading {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    color: #007bff;
+}
+
+.underline {
+    width: 50px;
+    height: 4px;
+    background-color: #000;
+    margin-bottom: 20px;
+}
+
+.icon-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* Space between icon items */
+}
+
+.icon-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px; /* Space between icon and text */
+}
+
+.icon-text h5 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.icon-text p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.text-about h4 {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* .read-more-btn {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+} */
+
+.read-more-btn:hover {
+    background-color: #0056b3;
+}
+
+
+
+.books-section {
+    padding: 50px 0;
+    text-align: center;
+    color: #ffffff;
+}
+
+.book-heading {
+    font-size: 3rem;
+    margin-bottom: 50px;
+    margin-top: 20px;
+    color: #007bff;
+}
+
+.book-card {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-top: 30px; /* Add padding-top for more space */
+    /* width: 225px; */
+}
+.book-details {
+    padding: 24px;
+}
+
+.book-item {
+    margin-bottom: 30px;
+}
+
+.count {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.book-image {
+    width: 100%;
+    height: auto;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    /* margin-bottom: 10px; */
+}
+
+.underline {
+    width: 50px;
+    height: 4px;
+    background-color: #000;
+    margin: 10px auto;
+}
+
+.box-content {
+    text-align: center;
+}
+
+.box-text {
+    margin-top: 10px;
+}
+
+/* Home.css */
+.more-books-button {
+    width: auto;
+    padding: 0.5rem 2rem;
+}
+.more-books-button:hover{
+    background-color: #0056b3;
+   
+} 
+
+
+
+.contact-background {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.contact-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: relative;
+}
+
+.contact-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.contact-header {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.contact-heading {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.contact-form .form-group {
+    margin-bottom: 15px;
+    
+}
+
+.contact-form .form-control {
+    height: 45px;
+    border-radius: 0;
+    color: black; /* Text color set to black */
+}
+
+.contact-form textarea.form-control {
+    height: auto;
+    color: black; /* Text color set to black */
+  
+}
+
+.contact-button {
+    width: 100%;
+    height: 45px;
+    border-radius: 0;
+    background-color: #007bff;
+    border: none;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.contact-button:hover {
+    background-color: #0056b3;
+}
+
+
+
